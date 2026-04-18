@@ -588,7 +588,7 @@
 
 <footer>© 2025 DoDo</footer>
 
-<!-- ⭐ DoDo Falling Can Script (now working perfectly) -->
+<!-- Falling-can JS -->
 <script>
 const spawnIntervalMs = 700;
 const minDuration = 8.0;
@@ -597,44 +597,85 @@ const baseWidth = 44;
 const minScale = 0.65;
 const maxScale = 0.90;
 
-const fallingContainer = document.getElementById("falling-items");
+const container = document.getElementById('falling-items');
 
 function makeCanSVG() {
   return `
-  <svg viewBox="0 0 40 100">
-    <rect x="5" y="6" width="30" height="84" rx="5" fill="#fff" stroke="#ccc"/>
-    <text x="20" y="50" text-anchor="middle" font-size="14" font-weight="bold" fill="#000"
-      transform="rotate(-90 20,50)">DoDo</text>
-  </svg>`;
+    <div style="
+      width: 100%;
+      height: 100%;
+      position: relative;
+    ">
+      <div style="
+        position: absolute;
+        left: 5px;
+        top: 6px;
+        width: 30px;
+        height: 84px;
+        background: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      ">
+        <span style="
+          display: block;
+          transform: rotate(-90deg);
+          font-family: Poppins, Arial, sans-serif;
+          font-size: 12px;
+          font-weight: 700;
+          color: #000000;
+          line-height: 1;
+          white-space: nowrap;
+        ">DoDo</span>
+      </div>
+    </div>
+  `;
 }
 
-function spawnCan() {
-  const can = document.createElement("div");
-  can.className = "falling-can";
-  can.innerHTML = makeCanSVG();
+function spawnCan(){
+  const wrapper = document.createElement('div');
+  wrapper.className = 'falling-can';
+  wrapper.innerHTML = makeCanSVG();
 
   const startX = Math.random() * window.innerWidth;
-  can.style.left = startX + "px";
+  wrapper.style.left = `${startX}px`;
+  wrapper.style.height = '100px';
 
   const scale = minScale + Math.random() * (maxScale - minScale);
-  can.style.width = baseWidth * scale + "px";
+  wrapper.style.width = Math.round(baseWidth * scale) + 'px';
 
-  const dur = minDuration + Math.random() * (maxDuration - minDuration);
-  can.style.animationDuration = dur + "s";
+  const dur = (minDuration + Math.random() * (maxDuration - minDuration)).toFixed(2);
+  wrapper.style.animationDuration = dur + 's';
 
-  fallingContainer.appendChild(can);
+  container.appendChild(wrapper);
 
-  can.addEventListener("animationend", () => can.remove());
+  const drift = Math.random() * 120 - 60;
+  requestAnimationFrame(() => {
+    wrapper.style.transition = `left ${dur}s linear`;
+    wrapper.style.left = (startX + drift) + 'px';
+  });
+
+  wrapper.addEventListener('animationend', () => wrapper.remove());
+  setTimeout(() => {
+    if (wrapper.parentNode) wrapper.remove();
+  }, (parseFloat(dur) + 0.5) * 1000);
 }
 
-setInterval(spawnCan, spawnIntervalMs);
-</script>
+spawnCan();
+let spawner = setInterval(spawnCan, spawnIntervalMs);
 
-<script>
-document.getElementById("toggle-answers").onclick = () => {
-  const box = document.getElementById("answers-text");
-  box.style.display = box.style.display === "none" ? "block" : "none";
-};
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    clearInterval(spawner);
+    spawner = null;
+  } else if (!spawner) {
+    spawner = setInterval(spawnCan, spawnIntervalMs);
+  }
+});
 </script>
 
 </body>
