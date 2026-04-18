@@ -175,23 +175,39 @@ const container = document.getElementById('falling-items');
 
 function makeCanSVG() {
   return `
-  <svg viewBox="0 0 40 100" width="40" height="100" xmlns="http://www.w3.org/2000/svg">
-    <!-- Can body -->
-    <rect x="5" y="6" width="30" height="84" rx="5" fill="#ffffff" stroke="#ccc" stroke-width="1"/>
-    <!-- DoDo text -->
-    <text
-      x="20"
-      y="50"
-      text-anchor="middle"
-      dominant-baseline="middle"
-      font-family="Poppins, Arial, sans-serif"
-      font-size="12"
-      font-weight="700"
-      fill="#000000"
-      transform="rotate(-90 20 50)">
-      DoDo
-    </text>
-  </svg>`;
+    <div style="
+      position: relative;
+      width: 40px;
+      height: 100px;
+      display: block;
+    ">
+      <div style="
+        position: absolute;
+        left: 5px;
+        top: 6px;
+        width: 30px;
+        height: 84px;
+        background: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      "></div>
+
+      <div style="
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(-90deg);
+        transform-origin: center;
+        font-family: Poppins, Arial, sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        color: #000000;
+        line-height: 1;
+        white-space: nowrap;
+        z-index: 2;
+      ">DoDo</div>
+    </div>`;
 }
 
 function spawnCan(){
