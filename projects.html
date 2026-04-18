@@ -277,7 +277,21 @@
   <div class="card-header">13. Conditionals & Loops Princeton Answers</div>
   <div class="content">
     
-    <button id="toggle-answers" class="btn">Show Detailed Answers</button>
+    <button
+  class="btn"
+  onclick="
+    const box = document.getElementById('answers-text');
+    if (box.style.display === 'block') {
+      box.style.display = 'none';
+      this.textContent = 'Show Detailed Answers';
+    } else {
+      box.style.display = 'block';
+      this.textContent = 'Hide Detailed Answers';
+    }
+  "
+>
+  Show Detailed Answers
+</button>
 
     <div id="answers-text">
 
