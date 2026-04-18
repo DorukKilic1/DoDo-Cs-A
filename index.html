@@ -175,12 +175,20 @@ const container = document.getElementById('falling-items');
 
 function makeCanSVG() {
   return `
-  <svg viewBox="0 0 40 100" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 40 100" width="40" height="100" xmlns="http://www.w3.org/2000/svg">
     <!-- Can body -->
     <rect x="5" y="6" width="30" height="84" rx="5" fill="#ffffff" stroke="#ccc" stroke-width="1"/>
-    <!-- DoDo text rotated like PRIME logo -->
-    <text x="20" y="50" text-anchor="middle" font-size="14" font-weight="bold" fill="#000000"
-      transform="rotate(-90 20,50)">
+    <!-- DoDo text -->
+    <text
+      x="20"
+      y="50"
+      text-anchor="middle"
+      dominant-baseline="middle"
+      font-family="Poppins, Arial, sans-serif"
+      font-size="12"
+      font-weight="700"
+      fill="#000000"
+      transform="rotate(-90 20 50)">
       DoDo
     </text>
   </svg>`;
@@ -197,9 +205,6 @@ function spawnCan(){
   const scale = minScale + Math.random() * (maxScale - minScale);
   wrapper.style.width = Math.round(baseWidth * scale) + 'px';
 
-  const startRot = Math.random() * 30 - 15;
-  wrapper.style.transform = `rotate(${startRot}deg)`;
-
   const dur = (minDuration + Math.random() * (maxDuration - minDuration)).toFixed(2);
   wrapper.style.animationDuration = dur + 's';
 
@@ -212,7 +217,7 @@ function spawnCan(){
   });
 
   wrapper.addEventListener('animationend', () => wrapper.remove());
-  setTimeout(() => { if (wrapper.parentNode) wrapper.remove(); }, (parseFloat(dur)+0.5)*1000);
+  setTimeout(() => { if (wrapper.parentNode) wrapper.remove(); }, (parseFloat(dur) + 0.5) * 1000);
 }
 
 let spawner = setInterval(spawnCan, spawnIntervalMs);
